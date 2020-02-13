@@ -14,19 +14,21 @@ import androidx.room.Room
 import com.facebook.stetho.Stetho
 import com.hyungilee.todoapp.R
 import com.hyungilee.todoapp.adapter.ToDoListAdapter
+import com.hyungilee.todoapp.application.ContextUtil
 import com.hyungilee.todoapp.db.ToDoListDatabase
 import com.hyungilee.todoapp.model.ToDoListItem
-import com.hyungilee.todoapp.services.DataService
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.todo_recyclerview_layout.*
-import kotlinx.android.synthetic.main.todo_recyclerview_layout.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * @brief メイン画面(タスクを管理する画面)
+ *
+ * @par 概要
+ * アプリのメイン画面。
+ * 登録するタスクの内容を入力するeditTextボックス、登録したタスクのリストを表示するRecyclerView、RecyclerViewで表示されるデータを操作するためのボタンが含むレイアウトを持つ。
+ */
 class MainActivity : AppCompatActivity() {
 
     lateinit var toDoListAdapter : ToDoListAdapter
@@ -42,9 +44,8 @@ class MainActivity : AppCompatActivity() {
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                 .build());
 
-        todoListDatabase = Room.databaseBuilder(applicationContext, ToDoListDatabase::class.java, "ToDoListItem.db")
-                                                .allowMainThreadQueries()
-                                                .build()
+        // データベースのインスタンス
+        todoListDatabase = ToDoListDatabase.getInstance(ContextUtil.getApplicationContext())!!
 
         // Databaseで保存されているTo-Doリストの項目を全部取得して画面に表示
         var itemList = todoListDatabase.listDao().getAllListItem()
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun listItemSaveClicked(view: View){
-        val dateFormat = SimpleDateFormat("dd/M/yyyy")
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd")
         val currentDate = dateFormat.format(Date())
         val contentsTxt = contentEditTxt.text.toString()
         val listItem = ToDoListItem(0, contentsTxt, currentDate, false)
