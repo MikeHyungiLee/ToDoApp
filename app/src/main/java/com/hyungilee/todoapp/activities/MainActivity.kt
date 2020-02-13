@@ -15,8 +15,10 @@ import com.facebook.stetho.Stetho
 import com.hyungilee.todoapp.R
 import com.hyungilee.todoapp.adapter.ToDoListAdapter
 import com.hyungilee.todoapp.application.ContextUtil
+import com.hyungilee.todoapp.db.SharedPreferenceWrapper
 import com.hyungilee.todoapp.db.ToDoListDatabase
 import com.hyungilee.todoapp.model.ToDoListItem
+import com.hyungilee.todoapp.utilities.RECYCLERVIEW_ID
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.todo_recyclerview_layout.*
 import java.text.SimpleDateFormat
@@ -50,7 +52,13 @@ class MainActivity : AppCompatActivity() {
         // Databaseで保存されているTo-Doリストの項目を全部取得して画面に表示
         var itemList = todoListDatabase.listDao().getAllListItem()
         toDoListAdapter = ToDoListAdapter(this, itemList){todoListItem ->
-            todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            // 選択したタスクの状態を確認(True or false)
+            val taskStatus = todoListDatabase.listDao().checkTaskStatus(todoListItem.contentId)
+            if(taskStatus){
+                todoListDatabase.listDao().updateContentsStatus(false, todoListItem.contentId)
+            }else{
+                todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            }
         }
         todoRecyclerview.adapter = toDoListAdapter
         val layoutManager = LinearLayoutManager(this)
@@ -68,32 +76,75 @@ class MainActivity : AppCompatActivity() {
         todoListDatabase.listDao().saveListItem(listItem)
         var itemList = todoListDatabase.listDao().getAllListItem()
         toDoListAdapter = ToDoListAdapter(this, itemList){todoListItem ->
-            todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            // 選択したタスクの状態を確認(True or false)
+            val taskStatus = todoListDatabase.listDao().checkTaskStatus(todoListItem.contentId)
+            if(taskStatus){
+                todoListDatabase.listDao().updateContentsStatus(false, todoListItem.contentId)
+            }else{
+                todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            }
         }
         todoRecyclerview.adapter = toDoListAdapter
         toDoListAdapter.notifyDataSetChanged()
     }
 
     fun showAllItemClicked(view: View){
+        // 画面に表示されているRecyclerViewを区分するためにSharedPreferenceに値を保存
+        // 1: 全項目表示, 2: 完了項目表示
+        SharedPreferenceWrapper().setInt(RECYCLERVIEW_ID, 1)
         // Databaseで保存されているTo-Doリストの項目を全部取得して画面に表示
         var itemList = todoListDatabase.listDao().getAllListItem()
         toDoListAdapter = ToDoListAdapter(this, itemList){todoListItem ->
-            todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            // 選択したタスクの状態を確認(True or false)
+            val taskStatus = todoListDatabase.listDao().checkTaskStatus(todoListItem.contentId)
+            if(taskStatus){
+                todoListDatabase.listDao().updateContentsStatus(false, todoListItem.contentId)
+            }else{
+                todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            }
         }
         todoRecyclerview.adapter = toDoListAdapter
         toDoListAdapter.notifyDataSetChanged()
     }
 
     fun showCompletedItemClicked(view: View){
+        // 画面に表示されているRecyclerViewを区分するためにSharedPreferenceに値を保存
+        // 1: 全項目表示, 2: 完了項目表示
+        SharedPreferenceWrapper().setInt(RECYCLERVIEW_ID, 2)
         val completedListItem = todoListDatabase.listDao().getCompletedListItem()
         toDoListAdapter = ToDoListAdapter(this, completedListItem){todoListItem ->
-            todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            // 選択したタスクの状態を確認(True or false)
+            val taskStatus = todoListDatabase.listDao().checkTaskStatus(todoListItem.contentId)
+            if(taskStatus){
+                todoListDatabase.listDao().updateContentsStatus(false, todoListItem.contentId)
+            }else{
+                todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            }
         }
         todoRecyclerview.adapter = toDoListAdapter
         toDoListAdapter.notifyDataSetChanged()
     }
 
     fun deleteCompletedItemClicked(view: View){
+        val checkRecyclerView = SharedPreferenceWrapper().getInt(RECYCLERVIEW_ID,0)
         todoListDatabase.listDao().deleteCompletedListItem()
+        var itemList = listOf<ToDoListItem>()
+
+        if(checkRecyclerView == 1) {
+            itemList = todoListDatabase.listDao().getAllListItem()
+        }else if(checkRecyclerView == 2){
+            itemList = todoListDatabase.listDao().getCompletedListItem()
+        }
+        toDoListAdapter = ToDoListAdapter(this, itemList){todoListItem ->
+            // 選択したタスクの状態を確認(True or false)
+            val taskStatus = todoListDatabase.listDao().checkTaskStatus(todoListItem.contentId)
+            if(taskStatus){
+                todoListDatabase.listDao().updateContentsStatus(false, todoListItem.contentId)
+            }else{
+                todoListDatabase.listDao().updateContentsStatus(true, todoListItem.contentId)
+            }
+        }
+        todoRecyclerview.adapter = toDoListAdapter
+        toDoListAdapter.notifyDataSetChanged()
     }
 }
