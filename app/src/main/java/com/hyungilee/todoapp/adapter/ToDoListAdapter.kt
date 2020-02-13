@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hyungilee.todoapp.R
 import com.hyungilee.todoapp.model.ToDoListItem
 
-class ToDoListAdapter(private val context: Context, private val listItems: List<ToDoListItem>) : RecyclerView.Adapter<ToDoListAdapter.Holder>(){
+class ToDoListAdapter(private val context: Context, private val listItems: List<ToDoListItem>, val itemClick: (ToDoListItem) -> Unit) : RecyclerView.Adapter<ToDoListAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.todo_list_item_layout, parent,false)
-        return Holder(view)
+        return Holder(view, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +32,7 @@ class ToDoListAdapter(private val context: Context, private val listItems: List<
         holder.bindListItem(listItems[position])
     }
 
-    inner class Holder(itemView: View):RecyclerView.ViewHolder(itemView){
+    inner class Holder(itemView: View, itemClick: (ToDoListItem) -> Unit):RecyclerView.ViewHolder(itemView){
         val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
         val contents = itemView.findViewById<TextView>(R.id.item_contents)
         val date = itemView.findViewById<TextView>(R.id.item_date)
@@ -41,6 +41,10 @@ class ToDoListAdapter(private val context: Context, private val listItems: List<
             checkBox.isChecked = listItem.status
             contents.text = listItem.contents
             date.text = listItem.date
+
+            checkBox.setOnCheckedChangeListener { _, _ ->
+                itemClick(listItem)
+            }
         }
     }
 }
