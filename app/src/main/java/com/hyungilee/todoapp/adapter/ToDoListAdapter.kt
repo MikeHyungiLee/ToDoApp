@@ -45,8 +45,6 @@ class ToDoListAdapter(private val context: Context, private val listItems: List<
 
     }
 
-
-
     inner class Holder(itemView: View, itemClick: (ToDoListItem) -> Unit):RecyclerView.ViewHolder(itemView){
         private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
         private val contents = itemView.findViewById<TextView>(R.id.item_contents)
@@ -60,12 +58,6 @@ class ToDoListAdapter(private val context: Context, private val listItems: List<
             date.text = listItem.date
 
             checkBox.setOnCheckedChangeListener(null)
-
-            // Checkboxのチェック状態をデータベースから参照して設定する
-            // データベースのインスタンス
-//            val todoListDatabase = ToDoListDatabase.getInstance(ContextUtil.getApplicationContext())!!
-//            val taskStatus = todoListDatabase.listDao().checkTaskStatus(position)
-//            checkBox.isChecked = taskStatus
 
             checkBox.setOnCheckedChangeListener { _, _ ->
                 itemClick(listItem)

@@ -1,8 +1,19 @@
+/**
+ * @file ToDoApplication.kt
+ * @brief To-Do ListアプリのApplicationクラス
+ * @author Lee Hyungi
+ * @date 2020.02.13
+ */
 package com.hyungilee.todoapp.application
 
 import android.app.Application
 import android.content.Context
 
+/**
+ * @brief　メイン画面であるRecyclerViewにタスクの項目を出力する時に使うAdapterクラス
+ * @par 概要
+ * Singleton Instanceを含むToDoApplicationクラス
+ */
 class ToDoApplication : Application(){
     companion object{
         // Singleton Instance
@@ -16,6 +27,11 @@ class ToDoApplication : Application(){
     }
 }
 
+/**
+ * Context操作ユーティリティ
+ *
+ * AndroidのContextのうち、ApplicationContext と ActivityContext の使い分けを行うためのクラス
+ */
 class ContextUtil{
     companion object {
         /**
