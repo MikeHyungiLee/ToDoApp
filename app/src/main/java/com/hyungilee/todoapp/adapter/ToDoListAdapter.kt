@@ -16,6 +16,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hyungilee.todoapp.R
 import com.hyungilee.todoapp.model.ToDoListItem
 
+/**
+ * @brief　メイン画面であるRecyclerViewにタスクの項目を出力する時に使うAdapterクラス
+ * @param context アプリのContext
+ * @param listItems Recyclerviewに表示するタスクの項目リスト
+ * @param itemClick Adapterを呼び出す部分からクリックイベントを処理するためのitemClickパラメーター
+ * @par 概要
+ * メイン画面のRecyclerViewにタスクの項目を出力する時に使うAdapterクラス
+ * RecyclerViewのCustomizeレイアウト：R.layout.todo_list_item_layout
+ * リストの項目としてはCheckbox、タスクの内容、登録した日付の情報が含む
+ */
 class ToDoListAdapter(private val context: Context, private val listItems: List<ToDoListItem>, val itemClick: (ToDoListItem) -> Unit) : RecyclerView.Adapter<ToDoListAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
