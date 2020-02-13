@@ -26,4 +26,7 @@ interface ListDao {
     @Query("SELECT COUNT(contentId) FROM listItem_table WHERE status = 'false'")
     fun getLeftItemCount(): Int
 
+    @Query("UPDATE listItem_table SET status=:status WHERE contentId = :id")
+    fun updateContentsStatus(status: Boolean, id: Int)
+
 }
