@@ -33,7 +33,7 @@ interface ListDao {
     fun saveListItem(vararg listItem: ToDoListItem)
 
     // 完了されたタスクの項目を削除する時に使うメソット
-    @Query("DELETE FROM listItem_table WHERE status = 'true'")
+    @Query("DELETE FROM listItem_table WHERE status = 1")
     fun deleteCompletedListItem()
 
     // 指定されたアイテムを削除する時に使うメソット
@@ -45,15 +45,19 @@ interface ListDao {
     fun getAllListItem():List<ToDoListItem>
 
     // 完了したタスクのリストを取得するメソット
-    @Query("SELECT * FROM listItem_table WHERE status = 'true'")
+    @Query("SELECT * FROM listItem_table WHERE status = 1")
     fun getCompletedListItem():List<ToDoListItem>
 
     // 残っているタスクの数を数えるメソット
-    @Query("SELECT COUNT(contentId) FROM listItem_table WHERE status = 'false'")
+    @Query("SELECT COUNT(contentId) FROM listItem_table WHERE status = 0")
     fun getLeftItemCount(): Int
 
     // 登録されているタスクの状態をアップデートする時に使うメソット
     @Query("UPDATE listItem_table SET status=:status WHERE contentId = :id")
     fun updateContentsStatus(status: Boolean, id: Int)
+
+    // タスクの状態を確認する時に使うメソット
+    @Query("SELECT status FROM listItem_table WHERE contentId = :contentId")
+    fun checkTaskStatus(vararg contentId: Int): Boolean
 
 }

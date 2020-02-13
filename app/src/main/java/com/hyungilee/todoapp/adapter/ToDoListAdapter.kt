@@ -14,6 +14,8 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hyungilee.todoapp.R
+import com.hyungilee.todoapp.application.ContextUtil
+import com.hyungilee.todoapp.db.ToDoListDatabase
 import com.hyungilee.todoapp.model.ToDoListItem
 
 /**
@@ -39,20 +41,31 @@ class ToDoListAdapter(private val context: Context, private val listItems: List<
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bindListItem(listItems[position])
+        holder.bindListItem(listItems[position], position)
+
     }
 
 
 
     inner class Holder(itemView: View, itemClick: (ToDoListItem) -> Unit):RecyclerView.ViewHolder(itemView){
-        val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
-        val contents = itemView.findViewById<TextView>(R.id.item_contents)
-        val date = itemView.findViewById<TextView>(R.id.item_date)
+        private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
+        private val contents = itemView.findViewById<TextView>(R.id.item_contents)
+        private val date = itemView.findViewById<TextView>(R.id.item_date)
+        private val status = itemView.findViewById<TextView>(R.id.status)
 
-        fun bindListItem(listItem: ToDoListItem){
+        fun bindListItem(listItem: ToDoListItem, position: Int){
+            status.text = listItem.status.toString()
             checkBox.isChecked = listItem.status
             contents.text = listItem.contents
             date.text = listItem.date
+
+            checkBox.setOnCheckedChangeListener(null)
+
+            // Checkboxのチェック状態をデータベースから参照して設定する
+            // データベースのインスタンス
+//            val todoListDatabase = ToDoListDatabase.getInstance(ContextUtil.getApplicationContext())!!
+//            val taskStatus = todoListDatabase.listDao().checkTaskStatus(position)
+//            checkBox.isChecked = taskStatus
 
             checkBox.setOnCheckedChangeListener { _, _ ->
                 itemClick(listItem)
