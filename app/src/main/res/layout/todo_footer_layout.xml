@@ -7,7 +7,7 @@
     android:background="@drawable/footer_background">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/task_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -56,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/showCompletedItemBtn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/task_num"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

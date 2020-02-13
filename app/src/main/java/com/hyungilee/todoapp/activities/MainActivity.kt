@@ -20,6 +20,7 @@ import com.hyungilee.todoapp.db.ToDoListDatabase
 import com.hyungilee.todoapp.model.ToDoListItem
 import com.hyungilee.todoapp.utilities.RECYCLERVIEW_ID
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.todo_footer_layout.*
 import kotlinx.android.synthetic.main.todo_recyclerview_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,6 +49,9 @@ class MainActivity : AppCompatActivity() {
 
         // データベースのインスタンス
         todoListDatabase = ToDoListDatabase.getInstance(ContextUtil.getApplicationContext())!!
+
+        // レイアウトのfooterに表示されている残っているタスクの数を表示する部分を更新
+        refreshBottomTaskNum()
 
         // Databaseで保存されているTo-Doリストの項目を全部取得して画面に表示
         var itemList = todoListDatabase.listDao().getAllListItem()
@@ -86,6 +90,8 @@ class MainActivity : AppCompatActivity() {
         }
         todoRecyclerview.adapter = toDoListAdapter
         toDoListAdapter.notifyDataSetChanged()
+        // レイアウトのfooterに表示されている残っているタスクの数を表示する部分を更新
+        refreshBottomTaskNum()
     }
 
     fun showAllItemClicked(view: View){
@@ -146,5 +152,14 @@ class MainActivity : AppCompatActivity() {
         }
         todoRecyclerview.adapter = toDoListAdapter
         toDoListAdapter.notifyDataSetChanged()
+        // レイアウトのfooterに表示されている残っているタスクの数を表示する部分を更新
+        refreshBottomTaskNum()
+    }
+
+    private fun refreshBottomTaskNum(){
+        // 残っているタスクの数を取得する
+        val taskNum = todoListDatabase.listDao().getLeftItemCount()
+        // 残っているタスクの項目数を表示
+        task_num.text = "$taskNum item left"
     }
 }
