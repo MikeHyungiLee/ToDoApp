@@ -52,6 +52,10 @@ interface ListDao {
     @Query("SELECT COUNT(contentId) FROM listItem_table WHERE status = 0")
     fun getLeftItemCount(): Int
 
+    // 全体のタスク数を数えるメソット
+    @Query("SELECT COUNT(contentId) FROM listItem_table")
+    fun getEntireItemCount(): Int
+
     // 登録されているタスクの状態をアップデートする時に使うメソット
     @Query("UPDATE listItem_table SET status=:status WHERE contentId = :id")
     fun updateContentsStatus(status: Boolean, id: Int)
