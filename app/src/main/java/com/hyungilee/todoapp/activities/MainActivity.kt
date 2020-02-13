@@ -239,7 +239,7 @@ class MainActivity : AppCompatActivity() {
         // 残っているタスクの数を取得する
         val taskNum = todoListDatabase.listDao().getLeftItemCount()
         // 残っているタスクの項目数を表示
-        task_num.text = "$taskNum item left"
+        task_num.text = "残タスク数：$taskNum "
     }
 
     /**
