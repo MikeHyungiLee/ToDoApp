@@ -42,6 +42,8 @@ class ToDoListAdapter(private val context: Context, private val listItems: List<
         holder.bindListItem(listItems[position])
     }
 
+
+
     inner class Holder(itemView: View, itemClick: (ToDoListItem) -> Unit):RecyclerView.ViewHolder(itemView){
         val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
         val contents = itemView.findViewById<TextView>(R.id.item_contents)
