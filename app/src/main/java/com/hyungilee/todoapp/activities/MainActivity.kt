@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         }
         todoRecyclerview.adapter = toDoListAdapter
         val layoutManager = LinearLayoutManager(this)
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
         todoRecyclerview.layoutManager = layoutManager
         todoRecyclerview.setHasFixedSize(true)
     }
