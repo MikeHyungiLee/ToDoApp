@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "listItem_table")
 data class ToDoListItem(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var contentId: Int = 0,
 
     @ColumnInfo(name = "contents")
