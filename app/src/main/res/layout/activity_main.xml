@@ -9,15 +9,18 @@
     <EditText
         android:id="@+id/contentEditTxt"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/task_input_text_box_background"
         android:ems="10"
-        android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:paddingLeft="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/todoList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,12 +49,13 @@
 
     <Button
         android:id="@+id/listItemSaveBtn"
-        android:onClick="listItemSaveClicked"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="47dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="保存"
+        android:background="@mipmap/ic_add_task_btn"
+        android:onClick="listItemSaveClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
