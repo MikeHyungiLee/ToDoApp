@@ -10,7 +10,7 @@ import android.app.Application
 import android.content.Context
 
 /**
- * @brief　メイン画面であるRecyclerViewにタスクの項目を出力する時に使うAdapterクラス
+ * @brief　Applicationクラス
  * @par 概要
  * Singleton Instanceを含むToDoApplicationクラス
  */
